@@ -1,5 +1,6 @@
 import random
 
+
 class GameCharacter:
     __status = 'Active'
 
@@ -13,8 +14,7 @@ class GameCharacter:
     def speak(self):
         print('Hi, my name is ' + self.name + ' I\'m feeling good')
 
-
-    def string (self):
+    def string(self):
         print('I\'m ready for battle')
 
     def get_status(self):
@@ -29,7 +29,7 @@ class GameCharacter:
 
 class Villain(GameCharacter):
 
-    def __init__(self,name, health,
+    def __init__(self, name, health,
                  level):
         GameCharacter.__init__(self, name, health,
                                level)
@@ -49,23 +49,15 @@ class Villain(GameCharacter):
             print('Lucky number ', a)
 
 
+if __name__ == '__main__':
 
-Michael = GameCharacter('Michael', 100, 1)
-Veron = Villain('Veron', 100, 2)
-
-
-
-
-Michael.speak()
-Veron.speak()
-Michael.string()
-print(Michael.health)
-Veron.kill()
-print(Michael.health)
-Michael.get_status()
-Veron.get_status()
-
-
-
-
-
+    Michael = GameCharacter('Michael', 100, 1)
+    Veron = Villain('Veron', 100, 2)
+    Michael.speak()
+    Veron.speak()
+    Michael.string()
+    print(Michael.health)
+    Veron.kill()
+    print(Michael.health)
+    Michael.get_status()
+    Veron.get_status()
