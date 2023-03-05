@@ -1,0 +1,155 @@
+"""
+цветочница
+определить иерархию и создать несколько цветов.
+Собрать букет(можно использовать аксессуары) с определением его стоимости.
+Определить время его увядания по среднему времени жизни всех цветов в букете. 
+Позволить сортировку цветов в букете на основе различных параметров (свежесть/цвет/длина стебля/стоимость)
+реализовать поиск цветов в букете по определенным параметрам. Узнать есть ли цветок в букете.
+"""
+class Flower:
+    def __init__(self, name, colour, lenght_of_flower:int, price: float, period_of_life: int):
+        self.name = name
+        self.colour = colour
+        self.lenght_of_flower = lenght_of_flower
+        self.price = price
+        self.period_of_life = period_of_life
+
+    def name_of_flower(self):
+        print("This is ", self.name)
+
+
+    def colour_of_flower(self):
+        print("The colour is: ", self.colour)
+
+    def get_stem_lenght(self):
+        print("Stem length: ", self.lenght_of_flower, "cm")
+
+    def get_price(self):
+        print("Price is: ", self.price, "$")
+
+    def get_period_of_life(self):
+        print("Freshness period: ", self.expiration_date, "days")
+
+    def __str__(self) -> str:
+        return self.name
+    
+    def __repr__ (self) -> str:
+        return self.name
+
+
+
+class Flower_bouquet ():
+    def __init__(self, name) -> None:
+         self.name = name
+    
+    __flowers = []
+    
+    def add_flower(self, Flower, count = 1):
+        for i in range(0,count):
+            self.__flowers.append(Flower)
+
+    def get_flowers(self):
+        return self.__flowers
+
+    def get_bouquet_price(self):
+        price = 0
+        for flower in self.__flowers:
+            price+=flower.price
+        return price
+
+    def get_count_of_flowers(self):
+        return len(self.__flowers)
+
+    def get_dead_time(self):
+        sum_of_days = 0
+        for flower in self.__flowers:
+            sum_of_days+=flower.period_of_life
+        return sum_of_days/self.get_count_of_flowers()
+
+    def sort_flowers(self, parametr: str, direction: str = 'tohight'):
+        if parametr == 'price':
+            if direction == "tohight":
+                self.__flowers.sort(key = lambda flower: flower.price, reverse=False)
+            if direction == "tolow":
+                self.__flowers.sort(key = lambda flower: flower.price, reverse=True)
+
+        if parametr == 'length':
+            if direction == "tohight":
+                self.__flowers.sort(key = lambda flower: flower.lenght_of_flower, reverse=False)
+            if direction == "tolow":
+                self.__flowers.sort(key = lambda flower: flower.lenght_of_flower, reverse=True)
+
+        if parametr == 'color':
+            if direction == "tohight":
+                self.__flowers.sort(key = lambda flower: flower.colour, reverse=False)
+            if direction == "tolow":
+                self.__flowers.sort(key = lambda flower: flower.colour, reverse=True)
+
+        if parametr == 'period_of_life':
+            if direction == "tohight":
+                self.__flowers.sort(key = lambda flower: flower.period_of_life, reverse=False)
+            if direction == "tolow":
+                self.__flowers.sort(key = lambda flower: flower.period_of_life, reverse=True)
+
+
+    def search_flower(self, price = None, color = None, length=None, period_of_life =None):
+        search_params = {}
+        if price: search_params['price'] = price
+        if color: search_params['color'] = color
+        if length: search_params['lenght_of_flower'] = length
+        if period_of_life: search_params['period_of_life'] = period_of_life
+        if not search_params: 
+            return 'Параметры поиск не заданы'
+        
+        search_resaults = []
+        for flower in self.__flowers:
+            status = True
+            for param in search_params.items():
+                if getattr(flower, param[0]) != param[1]:
+                    status = False
+                    break
+            if status == True:
+                search_resaults.append(flower)
+
+        if not search_resaults: return 'Поиск не дал результатов'    
+        else: return search_resaults
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    #Создаем объекты класса Цветы
+    Chamomile = Flower("Chamomile", "White", 25, 10, 7)
+    Peony_shaped_tulips = Flower("Peony shaped tulips", "Pink & White", 25, 20, 8)
+    Ranunculus = Flower("Ranunculus", "Yellow",15 , 15, 7)
+    Gipsofila = Flower("Gipsofila", "Purple", 10, 18, 14)
+    Evcalipt= Flower("Evcalipt",  "Red", 7, 17, 2)
+
+    #Создаем объекты класса Букет
+    bouquet1 = Flower_bouquet('Венник')
+    #Добавляем цветы в букет 
+    bouquet1.add_flower(Chamomile)
+    bouquet1.add_flower(Peony_shaped_tulips, 3)
+    bouquet1.add_flower(Ranunculus)
+    bouquet1.add_flower(Gipsofila, 3)
+
+    #Получаем список цветов в букете
+    print ("Список цветов в букете: ", bouquet1.get_flowers())
+    # Стоимость букета
+    print("Стоимость букета: ", bouquet1.get_bouquet_price(), " $")
+    # Время жизни букета
+    print ("Время жизни букета: ", bouquet1.get_dead_time())
+
+    # Сортировка цветов в букете с указанием параметра и направлением сортировки
+    bouquet1.sort_flowers(parametr='period_of_life', direction='tolow')
+
+    # Параметрический поиск цветов в букете
+    print(
+        bouquet1.search_flower(period_of_life=7, price=15)
+    )
+
+
